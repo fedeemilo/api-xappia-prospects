@@ -3,7 +3,7 @@ const app = express();
 const cors = require("cors");
 const path = require("path");
 const routesLeads = require("./routes/route.leads");
-const PORT = 5005;
+const PORT = process.env.PORT || 5005;
 
 // Swagger Docs
 const swaggerDocs = require("./swagger_config");
