@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+
+    <title>API Xappia Prospects</title>
+  </head>
+  <body>
+    <div class="p-1 mt-1">
+      <a href="/" style="font-size: 1.6rem; text-decoration: none"
+        >&#129044; Inicio</a
+      >
+    </div>
+
+    <div
+      class="d-flex flex-column justify-content-center align-items-center p-3"
+    >
+      <h1 class="p-3">Cargar Archivo Excel</h1>
+      <form
+        action="/leads-excel-to-json"
+        method="post"
+        enctype="multipart/form-data"
+      >
+        <div class="d-flex">
+          <div class="d-flex">
+            <input
+              type="file"
+              class="form-control m-1"
+              name="uploadfile"
+              required
+            />
+            <input type="submit" class="btn btn-success m-1" value="Cargar" />
+          </div>
+          <div class="spinner-excel spinner-border text-success m-2 d-none" role="status">
+            <span class="sr-only ml-2"></span>
+          </div>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

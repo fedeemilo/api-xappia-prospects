@@ -7,13 +7,12 @@ const swaggerOptions = {
     info: {
       version: "1.0.0",
       title: "API Xappia Prospectos",
-      description:
-        "Servicio para el envío de leads a Salesforce",
+      description: "Servicio para el envío de leads a Salesforce",
       contact: {
         name: "Federico Milone",
         email: "fedeemilo91@gmail.com"
       },
-      servers: ["http://localhost:5005"]
+      servers: [`${process.env.BASE_URL}`]
     }
   },
   apis: ["./routes/route.*.js"]

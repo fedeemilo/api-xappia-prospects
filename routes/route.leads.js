@@ -1,7 +1,15 @@
 const express = require("express");
 const router = express.Router();
 const path = require("path");
-const { sendLead } = require("../controllers/controller.leads");
+const multer = require("multer");
+const {
+  sendLead,
+  convertExcelToJson,
+  uploadLead,
+  sendMultipleLeads
+} = require("../controllers/controller.leads");
+const { simpleDate } = require("../utils");
+const { request } = require("http");
 
 router.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "pages", "/index.html"));
@@ -9,7 +17,7 @@ router.get("/", (req, res) => {
 
 /**
  * @swagger
- * /send-leads:
+ * /leads-send:
  *  post:
  *    description: Se envía un nuevo prospecto hacia el sistema de Salesforce
  *    parameters:
@@ -128,6 +136,30 @@ router.get("/", (req, res) => {
  *              example: operation performed with inactive user [xxxxxxxx] as owner of lead
  *
  */
-router.post("/send-leads", sendLead);
+router.post("/leads-send", sendLead);
+
+let storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.join(__dirname, "..", "uploads"));
+  },
+  filename: function (req, file, cb) {
+    let fileName = file.originalname.split(" ").join("-").toLowerCase();
+
+    cb(null, simpleDate + "-" + fileName);
+  }
+});
+
+// Multer Upload Storage
+let upload = multer({ storage });
+
+router.get("/leads-upload", uploadLead);
+
+router.post(
+  "/leads-excel-to-json",
+  upload.single("uploadfile"),
+  convertExcelToJson
+);
+
+router.post("/leads-multiple", sendMultipleLeads);
 
 module.exports = router;

@@ -1,4 +1,4 @@
-/* OBJETO LEAD */
+/* ARMAR OBJETO LEAD */
 
 const date = new Date();
 const [month, day, year] = [
@@ -14,6 +14,8 @@ const [hour, minutes, seconds] = [
 
 const fullDate = `${day}/${month}/${year} ${hour}:${minutes}:${seconds}`;
 
+const simpleDate = `${day}-${month}-${year}`;
+
 const makeArrayPhones = phones => {
   let arrPhones = phones.reduce((arr, phone) => {
     let type = phone.length <= 8 ? "phone" : "mobile";
@@ -23,22 +25,20 @@ const makeArrayPhones = phones => {
   return arrPhones;
 };
 
-function makePropsectObject(
-  comments,
-  interest,
-  email,
-  name,
-  lastname,
-  phones,
-  city,
-  country,
+const makeProspectObject = ({
+  comments = "",
+  interest = "",
+  email = "",
+  name = "",
+  lastname = "",
+  phones = "",
+  city = "",
+  country = "",
   vehicles,
-  providerValue,
-  providerOrigin = null
-) {
+  providerValue = "Datero",
+  providerOrigin = "Leads TPA"
+}) => {
   let phonesArr = makeArrayPhones(phones);
-
-  console.log(phonesArr);
 
   let prospect = {
     prospect: {
@@ -73,7 +73,13 @@ function makePropsectObject(
           }
         ]
       },
-      vehicles,
+      vehicles: [
+        {
+          make: "",
+          model: "",
+          code: ""
+        }
+      ],
       provider: {
         name: {
           value: providerValue,
@@ -84,6 +90,6 @@ function makePropsectObject(
   };
 
   return prospect;
-}
+};
 
-module.exports = makePropsectObject;
+module.exports = { makeProspectObject, simpleDate };

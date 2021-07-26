@@ -1,14 +1,17 @@
+require("./config");
 const express = require("express");
 const app = express();
 const cors = require("cors");
 const path = require("path");
 const routesLeads = require("./routes/route.leads");
-const PORT = process.env.PORT || 5005;
+const PORT = process.env.PORT;
 
 // Swagger Docs
 const swaggerDocs = require("./swagger_config");
 // Swagger User Interface
 const swaggerUi = require("swagger-ui-express");
+
+
 
 /* Middlewares */
 app.use(cors());
@@ -28,3 +31,4 @@ app.use("/", routesLeads);
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
+

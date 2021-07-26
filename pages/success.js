@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+const htmlSuccess = listLeads => `<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -11,24 +11,24 @@
       integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
       crossorigin="anonymous"
     />
-
     <title>API Xappia Prospects</title>
   </head>
   <body>
-    <div
-      class="d-flex flex-column justify-content-center align-items-center p-3"
-    >
-      <img src="/images/xappia.png" alt="xappia" class="w-25" />
+    <div class="p-1 mt-1">
+      <a href="/" style="font-size: 1.6rem; text-decoration: none"
+        >&#129044; Inicio</a
+      >
+    </div>
+    <div class="alert alert-success mt-2" role="alert">
+      Los Leads han sido enviados con éxito a Salesforce!
+    </div>
 
-      <div class="d-flex flex-column mt-5" style="width: 20rem">
-        <a class="btn btn-primary btn-lg" href="/api-docs" role="button">API</a>
-        <a
-          class="btn btn-success btn-lg mt-4"
-          href="/leads-upload"
-          role="button"
-          >Cargar Excel</a
-        >
-      </div>
+    <div class="alert alert-secondary mt-2">
+      <h3>Lista de ID's de Leads enviados</h3>
+      <hr />
+      <p class="lead">${listLeads}</p>
     </div>
   </body>
-</html>
+</html>`;
+
+module.exports = { htmlSuccess };
