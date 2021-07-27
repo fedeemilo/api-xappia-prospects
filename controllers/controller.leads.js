@@ -222,8 +222,10 @@ module.exports = {
         comments
       });
 
+      // Log of Prospect object
+      console.log("*");
       console.log(JSON.stringify(prospectObj));
-      console.log("=========================");
+      console.log("*");
 
       const options = {
         method: "post",
@@ -244,8 +246,8 @@ module.exports = {
           const { ok, status } = response;
 
           if (ok) {
-            arrLeadIDs.push(resJson.LeadId);
             console.log(resJson);
+            arrLeadIDs.push(resJson.LeadId);
             let lastItem = arrOfLeads.length - 1;
 
             if (lead == lastItem) {
