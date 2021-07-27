@@ -11,8 +11,6 @@ const swaggerDocs = require("./swagger_config");
 // Swagger User Interface
 const swaggerUi = require("swagger-ui-express");
 
-
-
 /* Middlewares */
 app.use(cors());
 app.use(express.static(path.join(__dirname, "public")));

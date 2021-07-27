@@ -15,7 +15,7 @@ const {
   inactiveUserHelp
 } = require("../constants/messages");
 
-const url =  "https://api.toyota.com.ar:9201/dcx/api/leads";
+const url = "https://api.toyota.com.ar:9201/dcx/api/leads";
 const date = new Date();
 const [month, day, year] = [
   date.getMonth(),
@@ -52,7 +52,7 @@ const makeProspectObject = ({
   country = "",
   vehicles,
   providerValue = "Datero",
-  providerOrigin = "Leads TPA"
+  providerOrigin = "Leads AGP"
 }) => {
   let phonesArr = makeArrayPhones(phones);
 
@@ -124,13 +124,89 @@ let sendNewLead = prospectObj => {
       }
     };
 
+    let okResponse;
+    let statusResponse;
+
     return fetch(url, options)
       .then(response => {
+        const { ok, status } = response;
+        okResponse = ok;
+        statusResponse = status;
+
         return response.json();
       })
       .then(resJson => {
-        console.log(resJson)
-        return resolve(resJson);
+        console.log(resJson);
+
+        if (okResponse) {
+          return resolve(resJson);
+        }
+
+        /* Error 400 */
+        if (statusResponse === 400) {
+          if (resJson.Error === "Faltan campos obligatorios: [LastName]") {
+            return reject({
+              okResponse,
+              statusResponse,
+              message: noLastNameMsg
+            });
+          }
+
+          if (
+            resJson.Error.contains("operation performed with inactive user")
+          ) {
+            return reject({
+              okResponse,
+              statusResponse,
+              message: inactiveUserMsg,
+              help: inactiveUserHelp
+            });
+          }
+        }
+
+        /* Error 404 */
+        if (statusResponse === 404) {
+          // Invalid user
+          if (resJson["Auth error"] === "invalid user") {
+            return reject({
+              okResponse,
+              statusResponse,
+              message: invalidUserMsg,
+              help: invalidUserHelp
+            });
+          }
+
+          // Invalid password
+          if (resJson["Auth error"] === "invalid password") {
+            return reject({
+              okResponse,
+              statusResponse,
+              message: invalidPasswordMsg,
+              help: invalidPasswordHelp
+            });
+          }
+        }
+
+        /* Error 412 */
+        if (statusResponse === 412) {
+          if (resJson.Error === "no dealer specified") {
+            return reject({
+              ok,
+              statusResponse,
+              message: noDealerMsg,
+              help: noDealerHelp
+            });
+          }
+
+          if (resJson.Error === "Fuente no registrada") {
+            return reject({
+              ok,
+              statusResponse,
+              message: invalidProviderMsg,
+              help: invalidProviderHelp
+            });
+          }
+        }
       })
       .catch(err => {
         reject(err);

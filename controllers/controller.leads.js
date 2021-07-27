@@ -20,6 +20,7 @@ const {
 } = require("../constants/messages");
 const { makeProspectObject, createArrayOfPromises } = require("../utils");
 const { htmlSuccess } = require("../pages/success");
+const { htmlError } = require("../pages/error");
 
 // Entorno producción
 const url = "https://api.toyota.com.ar:9201/dcx/api/leads";
@@ -207,17 +208,13 @@ module.exports = {
 
         if (arrLeadIDs.length > 0) {
           res.send(htmlSuccess(JSON.stringify(arrLeadIDs)));
-          res.end()
+          res.end();
         } else {
-          res.json({
-            ok: false,
-            message: "Ha ocurrido un error en la petición",
-            leads: arrOfLeads
-          });
+          res.send(htmlError(result));
         }
       })
       .catch(err => {
-        console.log(err);
+        res.send(htmlError(err));
       });
   }
 };
