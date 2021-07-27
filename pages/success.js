@@ -15,7 +15,7 @@ const htmlSuccess = listLeads => `<!DOCTYPE html>
   </head>
   <body>
     <div class="d-flex flex-column justify-content-center align-items-center">
-      <img src="/images/xappia.png" alt="xappia" style="width: 11%" />
+      <img src="/images/xappia.png" alt="xappia" style="width: 9%" />
     </div>
     <div class="p-2 mt-2 d-flex justify-content-between">
       <a href="/" style="font-size: 1.6rem; text-decoration: none">&#129044; Inicio</a>
