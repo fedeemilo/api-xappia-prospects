@@ -1,5 +1,21 @@
 /* ARMAR OBJETO LEAD */
+const { response } = require("express");
+const fetch = require("node-fetch");
+const {
+  invalidUserMsg,
+  invalidPasswordMsg,
+  noDealerMsg,
+  noDealerHelp,
+  invalidUserHelp,
+  invalidPasswordHelp,
+  invalidProviderMsg,
+  invalidProviderHelp,
+  noLastNameMsg,
+  inactiveUserMsg,
+  inactiveUserHelp
+} = require("../constants/messages");
 
+const url =  "https://api.toyota.com.ar:9201/dcx/api/leads";
 const date = new Date();
 const [month, day, year] = [
   date.getMonth(),
@@ -92,4 +108,60 @@ const makeProspectObject = ({
   return prospect;
 };
 
-module.exports = { makeProspectObject, simpleDate };
+/* Create promise to handle multiple POST requests of leads */
+
+let sendNewLead = prospectObj => {
+  return new Promise((resolve, reject) => {
+    const options = {
+      method: "post",
+      body: JSON.stringify(prospectObj),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        username: process.env.HEADER_USERNAME,
+        password: process.env.HEADER_PASSWORD,
+        dealer: process.env.HEADER_DEALER
+      }
+    };
+
+    return fetch(url, options)
+      .then(response => {
+        return response.json();
+      })
+      .then(resJson => {
+        console.log(resJson)
+        return resolve(resJson);
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
+};
+
+let createArrayOfPromises = arrOfLeads => {
+  let promises = [];
+
+  for (let i = 0; i < arrOfLeads.length; i++) {
+    let { name, lastname, phones, code, comments } = arrOfLeads[i];
+
+    let prospectObj = makeProspectObject({
+      name,
+      lastname,
+      phones,
+      code,
+      comments
+    });
+
+    console.log("*");
+    console.log(JSON.stringify(prospectObj));
+    console.log("*");
+
+    if (lastname) {
+      promises.push(sendNewLead(prospectObj));
+    }
+  }
+
+  return promises;
+};
+
+module.exports = { makeProspectObject, simpleDate, createArrayOfPromises };

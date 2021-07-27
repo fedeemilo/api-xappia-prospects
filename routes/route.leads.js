@@ -5,8 +5,7 @@ const multer = require("multer");
 const {
   sendLead,
   convertExcelToJson,
-  uploadLead,
-  sendMultipleLeads
+  uploadLead
 } = require("../controllers/controller.leads");
 const { simpleDate } = require("../utils");
 const { request } = require("http");
@@ -160,6 +159,5 @@ router.post(
   convertExcelToJson
 );
 
-router.post("/leads-multiple", sendMultipleLeads);
 
 module.exports = router;
