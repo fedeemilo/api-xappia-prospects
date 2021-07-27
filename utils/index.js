@@ -138,8 +138,10 @@ let sendNewLead = prospectObj => {
       .then(resJson => {
         console.log(resJson);
 
+        let { LeadId } = resJson;
+
         if (okResponse) {
-          return resolve(resJson);
+          return resolve(LeadId);
         }
 
         /* Error 400 */
