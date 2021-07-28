@@ -33,7 +33,7 @@ const fullDate = `${day}/${month}/${year} ${hour}:${minutes}:${seconds}`;
 
 const simpleDate = `${day}-${month}-${year}`;
 
-const fullDate2 = `${day}.${month}.${year}${hour}:${minutes}:${seconds}`
+const fullDate2 = `${day}.${month}.${year}${hour}:${minutes}:${seconds}`;
 
 const makeArrayPhones = phones => {
   let arrPhones = phones.reduce((arr, phone) => {
