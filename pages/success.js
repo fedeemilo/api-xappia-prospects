@@ -19,7 +19,7 @@ const htmlSuccess = listLeads => `<!DOCTYPE html>
     </div>
     <div class="p-2 mt-2 d-flex justify-content-between">
       <a href="/" style="font-size: 1.6rem; text-decoration: none">&#129044; Inicio</a>
-      <a href="/leads-upload" class="btn btn-outline-success" role="button">Cargar nuevo excel</a>
+      <a href="/leads-upload" class="btn btn-success" role="button">Cargar nuevo excel</a>
     </div>
     <div class="alert alert-success positio-relative mt-2" style="bottom: -1rem" role="alert">
       Los Leads han sido enviados con éxito a Salesforce!
@@ -28,7 +28,12 @@ const htmlSuccess = listLeads => `<!DOCTYPE html>
     <div class="alert alert-secondary mt-n2">
       <h3>Lista de ID's de Leads enviados</h3>
       <hr />
-      <p class="lead">${listLeads}</p>
+      <textarea class="lead" style="margin-top: 0px; margin-bottom: 0px; height: 20rem; width: 62.3rem">
+        ${listLeads}
+      </textarea>
+      <a class="btn btn-primary" style="position: absolute; top: .8rem; right: 1.2rem" href="/leads-download" role="button">
+        Decargar ID's
+      </a>
     </div>
   </body>
 </html>`;

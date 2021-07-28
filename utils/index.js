@@ -1,6 +1,7 @@
 /* ARMAR OBJETO LEAD */
 const { response } = require("express");
 const fetch = require("node-fetch");
+const axios = require("axios");
 const {
   invalidUserMsg,
   invalidPasswordMsg,
@@ -31,6 +32,8 @@ const [hour, minutes, seconds] = [
 const fullDate = `${day}/${month}/${year} ${hour}:${minutes}:${seconds}`;
 
 const simpleDate = `${day}-${month}-${year}`;
+
+const fullDate2 = `${day}.${month}.${year}${hour}:${minutes}:${seconds}`
 
 const makeArrayPhones = phones => {
   let arrPhones = phones.reduce((arr, phone) => {
@@ -242,4 +245,19 @@ let createArrayOfPromises = arrOfLeads => {
   return promises;
 };
 
-module.exports = { makeProspectObject, simpleDate, createArrayOfPromises };
+let fetchLoadExcel = async url => {
+  try {
+    const { data } = await axios.get(url);
+    return data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+module.exports = {
+  makeProspectObject,
+  simpleDate,
+  fullDate2,
+  createArrayOfPromises,
+  fetchLoadExcel
+};

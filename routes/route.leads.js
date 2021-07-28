@@ -5,7 +5,8 @@ const multer = require("multer");
 const {
   sendLead,
   convertExcelToJson,
-  uploadLead
+  uploadLead,
+  downloadLeads
 } = require("../controllers/controller.leads");
 const { simpleDate } = require("../utils");
 const { request } = require("http");
@@ -159,5 +160,6 @@ router.post(
   convertExcelToJson
 );
 
+router.get("/leads-download", downloadLeads);
 
 module.exports = router;

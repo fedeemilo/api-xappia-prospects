@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const path = require("path");
+const cookieParser = require("cookie-parser");
 const routesLeads = require("./routes/route.leads");
 const PORT = process.env.PORT;
 
@@ -12,7 +13,8 @@ const swaggerDocs = require("./swagger_config");
 const swaggerUi = require("swagger-ui-express");
 
 /* Middlewares */
-app.use(cors());
+app.use(cors({ origin: true, credentials: true }));
+app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(
   express.urlencoded({
@@ -29,4 +31,3 @@ app.use("/", routesLeads);
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
-

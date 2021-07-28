@@ -1,10 +1,9 @@
 require("../config");
 require("dotenv").config();
 const fetch = require("node-fetch");
+const fs = require("fs");
 const path = require("path");
 const excelToJson = require("convert-excel-to-json");
-const axios = require("axios");
-const fs = require("fs");
 const {
   invalidUserMsg,
   invalidPasswordMsg,
@@ -18,9 +17,16 @@ const {
   inactiveUserMsg,
   inactiveUserHelp
 } = require("../constants/messages");
-const { makeProspectObject, createArrayOfPromises } = require("../utils");
+const {
+  makeProspectObject,
+  createArrayOfPromises,
+  fetchLoadExcel,
+  fullDate2
+} = require("../utils");
 const { htmlSuccess } = require("../pages/success");
 const { htmlError } = require("../pages/error");
+const writeTxtFile = require("../utils/write-txt");
+const { fstat } = require("fs");
 
 // Entorno producción
 const url = "https://api.toyota.com.ar:9201/dcx/api/leads";
@@ -207,6 +213,7 @@ module.exports = {
         }
 
         if (arrLeadIDs.length > 0) {
+          res.cookie("arrLeadIDs", JSON.stringify(arrLeadIDs));
           res.send(htmlSuccess(JSON.stringify(arrLeadIDs)));
           res.end();
         } else {
@@ -216,5 +223,19 @@ module.exports = {
       .catch(err => {
         res.send(htmlError(err));
       });
+  },
+
+  /* Download lead ID's in a txt file */
+  downloadLeads(req, res) {
+    let content = req.cookies.arrLeadIDs;
+    let ID = JSON.parse(content).length;
+    let leadsFileName = `leads-${ID}.txt`;
+
+    writeTxtFile(content, leadsFileName);
+
+    let filePath = path.join(__dirname, "..", "utils/lead_ids/", leadsFileName);
+    res.setHeader("content-type", "application/text");
+    res.header("Content-Disposition", `attachment; filename=${leadsFileName}`);
+    fs.createReadStream(filePath).pipe(res);
   }
 };
