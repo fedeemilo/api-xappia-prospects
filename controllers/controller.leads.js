@@ -173,7 +173,7 @@ module.exports = {
     let filterResult = Object.values(result)[0].slice(1);
 
     const convertedResult = filterResult.reduce((arr, obj) => {
-      let { A: fullName, B: phone, C: mail, D: code, E: comments } = obj;
+      let { A: fullName, B: phone, C: mail, D: code, E: comments, F: providerOrigin } = obj;
       let arrName = [];
       let arrPhones = [];
 
@@ -191,7 +191,8 @@ module.exports = {
         phones: arrPhones,
         mail,
         code,
-        comments
+        comments,
+        providerOrigin
       };
 
       arr.push(newProspect);

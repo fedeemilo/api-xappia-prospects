@@ -54,8 +54,8 @@ const makeProspectObject = ({
   city = "",
   country = "",
   vehicles,
-  providerValue = "AGP AMBA",
-  providerOrigin = "AGP AMBA"
+  providerValue = "Datero",
+  providerOrigin
 }) => {
   let phonesArr = makeArrayPhones(phones);
 
@@ -223,14 +223,16 @@ let createArrayOfPromises = arrOfLeads => {
   let promises = [];
 
   for (let i = 0; i < arrOfLeads.length; i++) {
-    let { name, lastname, phones, code, comments } = arrOfLeads[i];
+    let { name, lastname, phones, code, comments, providerOrigin } =
+      arrOfLeads[i];
 
     let prospectObj = makeProspectObject({
       name,
       lastname,
       phones,
       code,
-      comments
+      comments,
+      providerOrigin
     });
 
     console.log("*");
