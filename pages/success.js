@@ -12,6 +12,11 @@ const htmlSuccess = listLeads => `<!DOCTYPE html>
       crossorigin="anonymous"
     />
     <title>API Xappia Prospects</title>
+    <style>
+    .disabled-link {
+      pointer-events: none;
+    }
+    </style>
   </head>
   <body>
     <div class="d-flex flex-column justify-content-center align-items-center">
@@ -31,7 +36,7 @@ const htmlSuccess = listLeads => `<!DOCTYPE html>
       <textarea class="lead" style="margin-top: 0px; margin-bottom: 0px; height: 20rem; width: 62.3rem">
         ${listLeads}
       </textarea>
-      <a class="btn btn-primary" style="position: absolute; top: .8rem; right: 1.2rem" href="/leads-download" role="button">
+      <a class="btn btn-secondary disabled-link" style="position: absolute; top: .8rem; right: 1.2rem" href="/leads-download" data-toggle="tooltip" data-placement="top" title="En refacción. Deshabilitado momentaneamente">
         Decargar ID's
       </a>
     </div>
