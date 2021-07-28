@@ -54,8 +54,8 @@ const makeProspectObject = ({
   city = "",
   country = "",
   vehicles,
-  providerValue = "Datero",
-  providerOrigin = "Leads AGP"
+  providerValue = "AGP AMBA",
+  providerOrigin = "AGP AMBA"
 }) => {
   let phonesArr = makeArrayPhones(phones);
 
@@ -64,7 +64,7 @@ const makeProspectObject = ({
       requestdate: fullDate,
       customer: {
         comments,
-        interest: !interest ? "CONVENCIONAL" : interest,
+        interest: !interest ? "PLAN" : interest,
         contacts: [
           {
             emails: [
@@ -245,19 +245,9 @@ let createArrayOfPromises = arrOfLeads => {
   return promises;
 };
 
-let fetchLoadExcel = async url => {
-  try {
-    const { data } = await axios.get(url);
-    return data;
-  } catch (err) {
-    console.log(err);
-  }
-};
-
 module.exports = {
   makeProspectObject,
   simpleDate,
   fullDate2,
-  createArrayOfPromises,
-  fetchLoadExcel
+  createArrayOfPromises
 };

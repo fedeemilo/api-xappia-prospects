@@ -19,9 +19,7 @@ const {
 } = require("../constants/messages");
 const {
   makeProspectObject,
-  createArrayOfPromises,
-  fetchLoadExcel,
-  fullDate2
+  createArrayOfPromises
 } = require("../utils");
 const { htmlSuccess } = require("../pages/success");
 const { htmlError } = require("../pages/error");
