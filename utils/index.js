@@ -1,6 +1,6 @@
 /* ARMAR OBJETO LEAD */
-const { response } = require("express");
 const fetch = require("node-fetch");
+const axios = require("axios");
 const {
   invalidUserMsg,
   invalidPasswordMsg,
@@ -110,6 +110,20 @@ const makeProspectObject = ({
   return prospect;
 };
 
+// Axios
+
+let axiosInstance = axios.create({
+  baseURL: url,
+  timeout: 60000,
+  headers: {
+    Accept: "application/json",
+    "Content-Type": "application/json",
+    username: "fGvova1i0J1nYiwXKgIY",
+    password: "o0dz2qd2nDnyI05TGS28",
+    dealer: "KAI"
+  }
+});
+
 /* Create promise to handle multiple POST requests of leads */
 
 let sendNewLead = prospectObj => {
@@ -218,6 +232,99 @@ let sendNewLead = prospectObj => {
   });
 };
 
+let asyncSendLead = async prospectObj => {
+  const options = {
+    method: "post",
+    body: JSON.stringify(prospectObj),
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      username: "fGvova1i0J1nYiwXKgIY",
+      password: "o0dz2qd2nDnyI05TGS28",
+      dealer: "KAI"
+    }
+  };
+
+  try {
+    let res = await axiosInstance.post(url, JSON.stringify(prospectObj));
+    let { status, data } = res;
+    let { LeadId } = data;
+    let ok = status === 200;
+
+    console.log(data);
+
+    if (ok) {
+      return LeadId;
+    }
+
+    /* Error 400 */
+    if (status === 400) {
+      if (data.Error === "Faltan campos obligatorios: [LastName]") {
+        return reject({
+          ok,
+          status,
+          message: noLastNameMsg
+        });
+      }
+
+      if (data.Error.contains("operation performed with inactive user")) {
+        return reject({
+          ok,
+          status,
+          message: inactiveUserMsg,
+          help: inactiveUserHelp
+        });
+      }
+    }
+
+    /* Error 404 */
+    if (status === 404) {
+      // Invalid user
+      if (data["Auth error"] === "invalid user") {
+        return reject({
+          ok,
+          status,
+          message: invalidUserMsg,
+          help: invalidUserHelp
+        });
+      }
+
+      // Invalid password
+      if (data["Auth error"] === "invalid password") {
+        return reject({
+          ok,
+          status,
+          message: invalidPasswordMsg,
+          help: invalidPasswordHelp
+        });
+      }
+    }
+
+    /* Error 412 */
+    if (status === 412) {
+      if (data.Error === "no dealer specified") {
+        return reject({
+          ok,
+          status,
+          message: noDealerMsg,
+          help: noDealerHelp
+        });
+      }
+
+      if (data.Error === "Fuente no registrada") {
+        return reject({
+          ok,
+          status,
+          message: invalidProviderMsg,
+          help: invalidProviderHelp
+        });
+      }
+    }
+  } catch (err) {
+    return err;
+  }
+};
+
 let createArrayOfPromises = arrOfLeads => {
   let promises = [];
 
@@ -239,7 +346,7 @@ let createArrayOfPromises = arrOfLeads => {
     console.log("*");
 
     if (lastname) {
-      promises.push(sendNewLead(prospectObj));
+      promises.push(asyncSendLead(prospectObj));
     }
   }
 

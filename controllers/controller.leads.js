@@ -207,6 +207,7 @@ module.exports = {
 
     Promise.all(promises)
       .then(result => {
+        console.log(result)
         for (let i = 0; i < promises.length; i++) {
           arrLeadIDs.push({
             name: convertedResult[i].name,
