@@ -12,6 +12,7 @@ const PORT = process.env.PORT;
 const swaggerDocs = require("./swagger_config");
 // Swagger User Interface
 const swaggerUi = require("swagger-ui-express");
+const { fullDate2 } = require("./utils");
 
 /* Middlewares */
 app.use(cors({ origin: true, credentials: true }));
@@ -24,6 +25,12 @@ app.use(
 );
 app.use(express.json());
 
+app.use((req, res, next) => {
+
+  console.log('Path:', req.originalUrl);
+  console.log('Time:', fullDate2);
+  next();
+})
 /* Routes */
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use("/", routesLeads);

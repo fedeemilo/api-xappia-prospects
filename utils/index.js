@@ -32,7 +32,7 @@ const fullDate = `${day}/${month}/${year} ${hour}:${minutes}:${seconds}`;
 
 const simpleDate = `${day}-${month}-${year}`;
 
-const fullDate2 = `${day}.${month}.${year}${hour}:${minutes}:${seconds}`;
+const fullDate2 = `${day}.${month}.${year}-${hour}:${minutes}:${seconds}`;
 
 const makeArrayPhones = phones => {
   let arrPhones = phones.reduce((arr, phone) => {
@@ -233,17 +233,6 @@ let sendNewLead = prospectObj => {
 };
 
 let asyncSendLead = async prospectObj => {
-  const options = {
-    method: "post",
-    body: JSON.stringify(prospectObj),
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      username: "fGvova1i0J1nYiwXKgIY",
-      password: "o0dz2qd2nDnyI05TGS28",
-      dealer: "KAI"
-    }
-  };
 
   try {
     let res = await axiosInstance.post(url, JSON.stringify(prospectObj));
