@@ -1,7 +1,6 @@
 /* ARMAR OBJETO LEAD */
 const { response } = require("express");
 const fetch = require("node-fetch");
-const axios = require("axios");
 const {
   invalidUserMsg,
   invalidPasswordMsg,
@@ -121,9 +120,9 @@ let sendNewLead = prospectObj => {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        username: process.env.HEADER_USERNAME,
-        password: process.env.HEADER_PASSWORD,
-        dealer: process.env.HEADER_DEALER
+        username: "fGvova1i0J1nYiwXKgIY",
+        password: "o0dz2qd2nDnyI05TGS28",
+        dealer: "KAI"
       }
     };
 
