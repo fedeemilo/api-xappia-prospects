@@ -212,7 +212,6 @@ module.exports = {
         }
 
         if (arrLeadIDs.length > 0) {
-          res.cookie("arrLeadIDs", JSON.stringify(arrLeadIDs));
           res.send(htmlSuccess(JSON.stringify(arrLeadIDs)));
           res.end();
         } else {
