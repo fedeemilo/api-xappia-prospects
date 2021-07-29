@@ -28,7 +28,7 @@ app.use(express.json());
 app.use((req, res, next) => {
 
   console.log('Path:', req.originalUrl);
-  console.log('Time:', fullDate2);
+
   next();
 })
 /* Routes */
