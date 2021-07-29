@@ -208,12 +208,15 @@ module.exports = {
     Promise.all(promises)
       .then(result => {
         for (let i = 0; i < promises.length; i++) {
-          arrLeadIDs.push(result[i]);
+          arrLeadIDs.push({
+            name: convertedResult[i].name,
+            lastname: convertedResult[i].lastname,
+            leadId: result[i]
+          });
         }
 
         if (arrLeadIDs.length > 0) {
-          res.cookie("arrLeadIDs", JSON.stringify(arrLeadIDs));
-          res.send(htmlSuccess(JSON.stringify(arrLeadIDs)));
+          res.json(arrLeadIDs)
           res.end();
         } else {
           res.send(htmlError(result));
