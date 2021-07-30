@@ -8,10 +8,6 @@ const cookieParser = require("cookie-parser");
 const routesLeads = require("./routes/route.leads");
 const PORT = process.env.PORT;
 
-// IP Address
-const ip = require("ip");
-const ipAddress = ip.address();
-
 // Swagger Docs
 const swaggerDocs = require("./swagger_config");
 // Swagger User Interface
@@ -30,7 +26,9 @@ app.use(
 app.use(express.json());
 
 app.use((req, res, next) => {
-  console.log("IP: ", ipAddress);
+  let ip =
+    req.headers["x-forwarded-for"].split(",")[0]
+  console.log("IP: ", ip);
   console.log("Path:", req.originalUrl);
 
   next();
