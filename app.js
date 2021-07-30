@@ -27,8 +27,14 @@ app.use(express.json());
 
 app.use((req, res, next) => {
   let ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+  let ipShort;
 
-  console.log("IP: ", ip);
+  if (ip) {
+    let arrIp = ip.split(":");
+    ipShort = ip.split(":")[arrIp.length - 1];
+  }
+
+  console.log("IP: ", ipShort || ip);
   console.log("Path:", req.originalUrl);
 
   next();
