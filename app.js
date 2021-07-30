@@ -26,8 +26,8 @@ app.use(
 app.use(express.json());
 
 app.use((req, res, next) => {
-  let ip =
-    req.headers["x-forwarded-for"].split(",")[0]
+  let ip = req.headers["x-forwarded-for"];
+
   console.log("IP: ", ip);
   console.log("Path:", req.originalUrl);
 
