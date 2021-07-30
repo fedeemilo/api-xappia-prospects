@@ -111,10 +111,9 @@ const makeProspectObject = ({
 };
 
 // Axios
-
 let axiosInstance = axios.create({
   baseURL: url,
-  timeout: 60000,
+  timeout: 2 * 60 * 1000,
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",
