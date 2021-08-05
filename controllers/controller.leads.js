@@ -17,14 +17,12 @@ const {
   inactiveUserMsg,
   inactiveUserHelp
 } = require("../constants/messages");
-const {
-  makeProspectObject,
-  createArrayOfPromises
-} = require("../utils");
+const { makeProspectObject, createArrayOfPromises } = require("../utils");
 const { htmlSuccess } = require("../pages/success");
 const { htmlError } = require("../pages/error");
 const writeTxtFile = require("../utils/write-txt");
 const { fstat } = require("fs");
+const { default: axios } = require("axios");
 
 // Entorno producción
 const url = "https://api.toyota.com.ar:9201/dcx/api/leads";
@@ -173,7 +171,14 @@ module.exports = {
     let filterResult = Object.values(result)[0].slice(1);
 
     const convertedResult = filterResult.reduce((arr, obj) => {
-      let { A: fullName, B: phone, C: mail, D: code, E: comments, F: providerOrigin } = obj;
+      let {
+        A: fullName,
+        B: phone,
+        C: mail,
+        D: code,
+        E: comments,
+        F: providerOrigin
+      } = obj;
       let arrName = [];
       let arrPhones = [];
 
@@ -201,31 +206,46 @@ module.exports = {
 
     /* Make multiple requests based on convertedResult length */
 
-    let arrLeadIDs = [];
     let arrOfLeads = convertedResult;
     let promises = createArrayOfPromises(arrOfLeads);
 
-    Promise.all(promises)
-      .then(result => {
-        console.log(result)
-        for (let i = 0; i < promises.length; i++) {
-          arrLeadIDs.push({
-            name: convertedResult[i].name,
-            lastname: convertedResult[i].lastname,
-            leadId: result[i]
-          });
-        }
-
-        if (arrLeadIDs.length > 0) {
-          res.json(arrLeadIDs)
-          res.end();
-        } else {
-          res.send(htmlError(result));
-        }
-      })
+    axios
+      .all(promises)
+      .then(
+        axios.spread((...responses) => {
+          if (responses.length > 0) {
+            res.json(prospects);
+            res.end();
+          } else {
+            res.send(htmlError(result));
+          }
+        })
+      )
       .catch(err => {
         res.send(htmlError(err));
       });
+
+    // Promise.all(promises)
+    //   .then(result => {
+    //     console.log(result)
+    //     for (let i = 0; i < promises.length; i++) {
+    //       arrLeadIDs.push({
+    //         name: convertedResult[i].name,
+    //         lastname: convertedResult[i].lastname,
+    //         leadId: result[i]
+    //       });
+    //     }
+
+    //     if (arrLeadIDs.length > 0) {
+    //       res.json(arrLeadIDs)
+    //       res.end();
+    //     } else {
+    //       res.send(htmlError(result));
+    //     }
+    //   })
+    //   .catch(err => {
+    //     res.send(htmlError(err));
+    //   });
   },
 
   /* Download lead ID's in a txt file */
