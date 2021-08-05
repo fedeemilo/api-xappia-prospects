@@ -214,7 +214,7 @@ module.exports = {
       .then(
         axios.spread((...responses) => {
           if (responses.length > 0) {
-            res.json(prospects);
+            res.json(responses);
             res.end();
           } else {
             res.send(htmlError(result));
