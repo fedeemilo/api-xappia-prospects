@@ -21,7 +21,6 @@ const { makeProspectObject, createArrayOfPromises } = require("../utils");
 const { htmlSuccess } = require("../pages/success");
 const { htmlError } = require("../pages/error");
 const writeTxtFile = require("../utils/write-txt");
-const { fstat } = require("fs");
 const { default: axios } = require("axios");
 
 // Entorno producción
