@@ -13,10 +13,18 @@ let baseUsername;
 let basePassword;
 let baseDealer;
 
+//   CREDENCIALES PRUEBA
+//   baseUsername = "cw1kA5l0m0zVC7Bf6qYn";
+//   basePassword = "gKwekUuVLpm7YWbXfHy0";
+
+//   CREDENCIALES PROD
+//   username: "fGvova1i0J1nYiwXKgIY",
+//   password: "o0dz2qd2nDnyI05TGS28",
+
 if (process.env.NODE_ENV === "dev") {
     baseUrl = `http://localhost:${process.env.PORT}`;
-    baseUsername = "cw1kA5l0m0zVC7Bf6qYn";
-    basePassword = "gKwekUuVLpm7YWbXfHy0";
+    baseUsername = "fGvova1i0J1nYiwXKgIY";
+    basePassword = "o0dz2qd2nDnyI05TGS28";
     baseDealer = "Datero";
 } else {
     baseUrl = "http://ec2-13-58-180-105.us-east-2.compute.amazonaws.com:8000";

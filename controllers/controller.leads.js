@@ -5,7 +5,11 @@ const fs = require("fs");
 const path = require("path");
 const excelToJson = require("convert-excel-to-json");
 
-const { makeProspectObject, createArrayOfPromises } = require("../utils");
+const {
+    makeProspectObject,
+    createArrayOfPromises,
+    parseJsonToLeadsArr
+} = require("../utils");
 const { htmlError } = require("../pages/error");
 const axios = require("axios");
 const handleErrors = require("../utils/errors");
@@ -83,65 +87,27 @@ module.exports = {
         res.sendFile(path.join(__dirname, "..", "pages", "/excel.html"));
     },
 
+    /* Convert Excel file to json and reduce it to an array of leads to send */
     async convertExcelToJson(req, res) {
-        const result = excelToJson({
+        const jsonFile = excelToJson({
             sourceFile: req.file.path
         });
 
-        let filterResult = Object.values(result)[0].slice(1);
-
-        const convertedResult = filterResult.reduce((arr, obj) => {
-            let {
-                A: fullName,
-                B: phone,
-                C: mail,
-                D: code,
-                E: comments,
-                F: providerOrigin
-            } = obj;
-            let arrName = [];
-            let arrPhones = [];
-            14;
-
-            if (fullName) {
-                arrName = fullName.split(" ");
-            }
-
-            if (phone) {
-                arrPhones = [].concat(phone.toString());
-            }
-
-            let newProspect = {
-                name: arrName[0],
-                lastname: arrName[arrName.length - 1],
-                phones: arrPhones,
-                mail,
-                code,
-                comments,
-                providerOrigin
-            };
-
-            arr.push(newProspect);
-            return arr;
-        }, []);
-
-        /* Make multiple requests based on convertedResult length */
-
+        const filterJson = Object.values(jsonFile)[0].slice(1);
+        const convertedResult = parseJsonToLeadsArr(filterJson);
         const promises = createArrayOfPromises(convertedResult);
 
+        try {
+            const allLeads = await Promise.all(promises);
 
-        Promise.all(promises)
-            .then(data => {
-                if (data.length > 0) {
-                    console.log(data);
-                    res.json(data);
-                    res.end();
-                } else {
-                    res.send(htmlError(result));
-                }
-            })
-            .catch(err => {
-                res.send(htmlError(err));
-            });
+            if (allLeads.length > 0) {
+                res.json(allLeads);
+                res.end();
+            } else {
+                res.send(htmlError(result));
+            }
+        } catch (error) {
+            res.send(htmlError(error));
+        }
     }
 };

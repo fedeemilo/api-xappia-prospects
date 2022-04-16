@@ -1,50 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Bootstrap -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-      crossorigin="anonymous"
-    />
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!-- Bootstrap -->
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+            crossorigin="anonymous"
+        />
+        <!-- Montserrat Google Font -->
+        <link
+            href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            body {
+                font-family: "Montserrat", sans-serif !important;
+            }
+        </style>
 
-    <title>API Xappia Prospects</title>
-  </head>
-  <body>
-    <div class="d-flex flex-column justify-content-center align-items-center mt-1">
-      <img src="/images/xappia.png" alt="xappia" style="width: 9%" />
-    </div>
-    <div class="position-absolute" style="top: .5rem; left: 1rem">
-      <a href="/" style="font-size: 1.6rem; text-decoration: none"
-        >&#129044; Inicio</a
-      >
-    </div>
-
-    <div
-      class="d-flex flex-column justify-content-center align-items-center p-3"
-    >
-      <h1 class="p-3">Cargar Archivo Excel</h1>
-      <form
-        action="/leads-to-json"
-        method="post"
-        enctype="multipart/form-data"
-      >
-        <div class="d-flex">
-          <div class="d-flex">
-            <input
-              type="file"
-              class="form-control m-1"
-              name="uploadfile"
-              required
-            />
-            <input type="submit" class="btn btn-success m-1" value="Cargar" />
-          </div>
+        <title>API Xappia Prospects</title>
+    </head>
+    <body class="bg-light bg-gradient">
+        <div
+            class="d-flex flex-column justify-content-center align-items-center  p-3"
+        >
+            <img src="/images/xappia.png" alt="xappia" style="width: 9%" />
         </div>
-      </form>
-    </div>
-  </body>
+        <div class="position-absolute" style="top: 0.5rem; left: 1rem">
+            <a href="/" style="font-size: 1.6rem; text-decoration: none"
+                >&#129044; Inicio</a
+            >
+        </div>
+
+        <div
+            class="d-flex flex-column justify-content-center align-items-center p-3"
+        >
+            <h1 class="p-3">Cargar Archivo Excel</h1>
+            <form
+                action="/leads-to-json"
+                method="post"
+                enctype="multipart/form-data"
+            >
+                <div class="d-flex">
+                    <div class="d-flex">
+                        <input
+                            type="file"
+                            class="form-control m-1"
+                            name="uploadfile"
+                            required
+                        />
+                        <input
+                            type="submit"
+                            class="btn btn-success m-1"
+                            value="Cargar"
+                        />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </body>
 </html>

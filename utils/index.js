@@ -13,21 +13,19 @@ const [hour, minutes, seconds] = [
     date.getSeconds()
 ];
 
-const isLocalhost = process.env.NODE_ENV === "dev";
+const isLocalhost = process.env.NODE_ENV !== "dev";
 const fullDate = `${day}/${month}/${year} ${hour}:${minutes}:${seconds}`;
 const simpleDate = `${day}-${month}-${year}`;
 const url = isLocalhost
     ? "https://200.7.15.135:9201/dcx/api/leads"
     : "https://api.toyota.com.ar:9201/dcx/api/leads";
 
-const makeArrayPhones = phones => {
-    let arrPhones = phones.reduce((arr, phone) => {
+const makeArrayPhones = phones =>
+    phones.reduce((arr, phone) => {
         let type = phone.length <= 8 ? "phone" : "mobile";
         arr.push({ type, value: phone });
         return arr;
     }, []);
-    return arrPhones;
-};
 
 const makeProspectObject = ({
     comments = "",
@@ -96,7 +94,40 @@ const makeProspectObject = ({
     return prospect;
 };
 
-/* Create promise to handle multiple POST requests of leads */
+const parseJsonToLeadsArr = excel =>
+    excel.reduce((arr, obj) => {
+        const {
+            A: fullName,
+            B: phone,
+            C: mail,
+            D: code,
+            E: comments,
+            F: providerOrigin
+        } = obj;
+        let arrName = [];
+        let arrPhones = [];
+
+        if (fullName) {
+            arrName = fullName.split(" ");
+        }
+
+        if (phone) {
+            arrPhones = [].concat(phone.toString());
+        }
+
+        const newProspect = {
+            name: arrName[0],
+            lastname: arrName[arrName.length - 1],
+            phones: arrPhones,
+            mail,
+            code,
+            comments,
+            providerOrigin
+        };
+
+        arr.push(newProspect);
+        return arr;
+    }, []);
 
 const asyncSendLead = async prospectObj => {
     try {
@@ -105,12 +136,18 @@ const asyncSendLead = async prospectObj => {
         const { LeadId } = data;
         const ok = status === 200;
 
-        if (ok) {
-            return LeadId;
-        }
+        if (ok) return LeadId;
     } catch (err) {
-        console.log(err);
-        return err;
+        if (err.response.data) {
+            if (err.response.data["Auth error"])
+                throw new Error(
+                    "❌ El nombre de usuario proporcionado no es válido."
+                );
+        } else {
+            throw new Error(
+                "❌ No se pudo enviar el lead. Inténtelo de nuevo."
+            );
+        }
     }
 };
 
@@ -142,8 +179,11 @@ const createArrayOfPromises = arrOfLeads => {
     return promises;
 };
 
+
+
 module.exports = {
     makeProspectObject,
     createArrayOfPromises,
-    simpleDate
+    simpleDate,
+    parseJsonToLeadsArr
 };

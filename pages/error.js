@@ -1,4 +1,4 @@
-const htmlError = (error) => `<!DOCTYPE html>
+const htmlError = error => `<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -11,17 +11,27 @@ const htmlError = (error) => `<!DOCTYPE html>
       integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
       crossorigin="anonymous"
     />
+    <!-- Montserrat Google Font -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500&display=swap"
+        rel="stylesheet"
+    />
+    <style>
+        body {
+            font-family: "Montserrat", sans-serif !important;
+        }
+    </style>
     <title>API Xappia Prospects</title>
   </head>
   <body>
     <div class="d-flex flex-column justify-content-center align-items-center">
       <img src="/images/xappia.png" alt="xappia" style="width: 9%" />
     </div>
-    <div class="p-2 mt-2 d-flex justify-content-between">
+    <div class="p-2 mt-2 d-flex justify-content-between m-3">
       <a href="/" style="font-size: 1.6rem; text-decoration: none">&#129044; Inicio</a>
       <a href="/leads-upload" class="btn btn-outline-success" role="button">Cargar nuevo excel</a>
     </div>
-    <div class="alert alert-danger mt-3" role="alert">
+    <div class="alert alert-danger mt-3 m-3" role="alert">
         <h4 class="alert-heading">Ha habido un error!</h4>
         <p>${error.message}</p>
         <p>${error.help ? error.help : ""}</p>
