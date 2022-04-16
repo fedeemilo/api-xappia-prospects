@@ -3,16 +3,14 @@ const router = express.Router();
 const path = require("path");
 const multer = require("multer");
 const {
-  sendLead,
-  convertExcelToJson,
-  uploadLead,
-  downloadLeads
+    sendLead,
+    convertExcelToJson,
+    uploadLead
 } = require("../controllers/controller.leads");
 const { simpleDate } = require("../utils");
-const { request } = require("http");
 
 router.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "pages", "/index.html"));
+    res.sendFile(path.join(__dirname, "..", "pages", "/index.html"));
 });
 
 /**
@@ -139,14 +137,14 @@ router.get("/", (req, res) => {
 router.post("/leads-send", sendLead);
 
 let storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, "..", "uploads"));
-  },
-  filename: function (req, file, cb) {
-    let fileName = file.originalname.split(" ").join("-").toLowerCase();
+    destination: function (req, file, cb) {
+        cb(null, path.join(__dirname, "..", "uploads"));
+    },
+    filename: function (req, file, cb) {
+        let fileName = file.originalname.split(" ").join("-").toLowerCase();
 
-    cb(null, simpleDate + "-" + fileName);
-  }
+        cb(null, simpleDate + "-" + fileName);
+    }
 });
 
 // Multer Upload Storage
@@ -155,11 +153,9 @@ let upload = multer({ storage });
 router.get("/leads-upload", uploadLead);
 
 router.post(
-  "/leads-excel-to-json",
-  upload.single("uploadfile"),
-  convertExcelToJson
+    "/leads-to-json",
+    upload.single("uploadfile"),
+    convertExcelToJson
 );
-
-router.get("/leads-download", downloadLeads);
 
 module.exports = router;

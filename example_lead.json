@@ -1,0 +1,22 @@
+{
+    "prospect": {
+        "requestdate": "17/2/2022 11:30:55",
+        "customer": {
+            "comments": "Le interesa el Corolla, cuenta con un chevrolet tracker mod 2014. Horario de contacto 17:30hs",
+            "interest": "PLAN",
+            "contacts": [
+                {
+                    "emails": [{ "value": "" }],
+                    "names": [
+                        { "part": "first", "value": "Luis" },
+                        { "part": "last", "value": "Quaranta" }
+                    ],
+                    "phones": [{ "type": "mobile", "value": "3764351226" }],
+                    "addresses": [{ "city": "", "country": "" }]
+                }
+            ]
+        },
+        "vehicles": [{ "make": "", "model": "", "code": "" }],
+        "provider": { "name": { "value": "Datero", "origin": "AGP AMBA" } }
+    }
+}
