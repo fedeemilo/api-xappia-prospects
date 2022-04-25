@@ -4,15 +4,16 @@ const fetch = require("node-fetch");
 const fs = require("fs");
 const path = require("path");
 const excelToJson = require("convert-excel-to-json");
-
 const {
-    makeProspectObject,
     createArrayOfPromises,
-    parseJsonToLeadsArr
+    parseJsonToLeadsArr,
+    makeProspectObject
 } = require("../utils");
 const { htmlError } = require("../pages/error");
-const axios = require("axios");
 const handleErrors = require("../utils/errors");
+const { default: axios } = require("axios");
+const { htmlSuccess } = require("../pages/success");
+const cluster = require("cluster");
 
 // Entorno producción
 // const url = "https://api.toyota.com.ar:9201/dcx/api/leads";
@@ -84,7 +85,8 @@ module.exports = {
 
     /* Render page for uploading Excel file */
     uploadLead(req, res) {
-        res.sendFile(path.join(__dirname, "..", "pages", "/excel.html"));
+        res.render(path.join(__dirname, "..", "views/pages", "/excel.ejs"));
+        cluster.worker.kill();
     },
 
     /* Convert Excel file to json and reduce it to an array of leads to send */
@@ -97,17 +99,16 @@ module.exports = {
         const convertedResult = parseJsonToLeadsArr(filterJson);
         const promises = createArrayOfPromises(convertedResult);
 
-        try {
-            const allLeads = await Promise.all(promises);
-
-            if (allLeads.length > 0) {
-                res.json(allLeads);
-                res.end();
-            } else {
-                res.send(htmlError(result));
-            }
-        } catch (error) {
-            res.send(htmlError(error));
-        }
+        axios
+            .all(promises)
+            .then(
+                axios.spread((...data) => {
+                    res.json({
+                        ok: true,
+                        result: data
+                    });
+                })
+            )
+            .catch(err => res.send(htmlError(err)));
     }
 };

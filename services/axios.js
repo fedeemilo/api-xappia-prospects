@@ -6,10 +6,23 @@ const instance = axios.create({
     headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        username: "fGvova1i0J1nYiwXKgIY",
-        password: "o0dz2qd2nDnyI05TGS28",
+        username: "cw1kA5l0m0zVC7Bf6qYn",
+        password: "gKwekUuVLpm7YWbXfHy0",
         dealer: "KAI"
     }
+});
+
+instance.interceptors.request.use(config => {
+    config.headers["request-startTime"] = process.hrtime();
+    return config;
+});
+
+instance.interceptors.response.use(response => {
+    const start = response.config.headers["request-startTime"];
+    const end = process.hrtime(start);
+    const milliseconds = Math.round(end[0] * 1000 + end[1] / 1000000);
+    response.headers["request-duration"] = milliseconds;
+    return response;
 });
 
 const adapter = {

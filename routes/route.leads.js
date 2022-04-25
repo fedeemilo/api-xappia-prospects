@@ -7,10 +7,10 @@ const {
     convertExcelToJson,
     uploadLead
 } = require("../controllers/controller.leads");
-const { simpleDate } = require("../utils");
+const { simpleDate } = require("../utils/dates");
 
 router.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "..", "pages", "/index.html"));
+    res.render(path.join(__dirname, "..", "views/pages", "/index.ejs"));
 });
 
 /**
@@ -152,10 +152,6 @@ let upload = multer({ storage });
 
 router.get("/leads-upload", uploadLead);
 
-router.post(
-    "/leads-to-json",
-    upload.single("uploadfile"),
-    convertExcelToJson
-);
+router.post("/leads-to-json/toyota", upload.single("file"), convertExcelToJson);
 
 module.exports = router;

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <%- include('../partials/head'); %>
+    </head>
+    <body class="container">
+        <header><%- include('../partials/header'); %></header>
+
+        <main
+            class="d-flex flex-column justify-content-center align-items-center p-3"
+        >
+            <h3 class="p-3">Cargar archivo excel</h3>
+            <form
+                action="/leads-to-json"
+                method="post"
+                enctype="multipart/form-data"
+            >
+                <div class="input-group">
+                    <input
+                        type="file"
+                        class="form-control h-100"
+                        name="uploadfile"
+                        aria-label="Upload"
+                        required
+                    />
+                    <button class="btn btn-outline-secondary" type="submit">
+                        Cargar
+                    </button>
+                    <div
+                        class="spinner-border text-secondary ml-2 mt-1 d-none"
+                        role="status"
+                    >
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+            </form>
+        </main>
+
+        <footer><%- include('../partials/footer'); %></footer>
+    </body>
+</html>
