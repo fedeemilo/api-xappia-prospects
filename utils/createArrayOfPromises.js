@@ -4,7 +4,7 @@ const makeProspectObject = require("./makeProspectObject");
 const asyncSendLead = async prospectObj => {
     try {
         const res = await axios.post(
-            "http://ec2-13-58-180-105.us-east-2.compute.amazonaws.com:8000",
+            "https://api.toyota.com.ar:9201/dcx/api/leads",
             JSON.stringify(prospectObj)
         );
         const { status, data } = res;
