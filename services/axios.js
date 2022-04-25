@@ -6,9 +6,9 @@ const instance = axios.create({
     headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        username: process.env.BASE_USERNAME,
-        password: process.env.BASE_PASSWORD,
-        dealer: process.env.BASE_DEALER
+        username: "fGvova1i0J1nYiwXKgIY",
+        password: "o0dz2qd2nDnyI05TGS28",
+        dealer: "KAI"
     }
 });
 
