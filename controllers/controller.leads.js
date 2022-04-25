@@ -103,7 +103,6 @@ module.exports = {
             .all(promises)
             .then(
                 axios.spread((...data) => {
-                    console.log(data);
                     res.json({
                         ok: true,
                         result: data
