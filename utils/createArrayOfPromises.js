@@ -2,16 +2,25 @@ const { axios } = require("../services");
 const makeProspectObject = require("./makeProspectObject");
 
 const asyncSendLead = async prospectObj => {
+    const {
+        prospect: {
+            customer: { contacts }
+        }
+    } = prospectObj;
+
+    const name = contacts[0].names[0].value;
+    const lastname = contacts[0].names[1].value;
+
     try {
         const res = await axios.post(
             "https://api.toyota.com.ar:9201/dcx/api/leads",
             JSON.stringify(prospectObj)
         );
         const { status, data } = res;
-        const { LeadId } = data;
+        const { LeadId: leadId } = data;
         const ok = status === 200;
 
-        if (ok) return LeadId;
+        if (ok) return { leadId, name, lastname };
     } catch (err) {
         if (err.response.data) {
             if (err.response.data["Auth error"])
