@@ -1,17 +1,13 @@
 const { axios } = require("../services");
 const makeProspectObject = require("./makeProspectObject");
-const cluster = require("cluster");
-
-const isLocalhost = process.env.NODE_ENV === "dev";
-
-const url = isLocalhost
-    ? "http://200.7.15.135:9201/dcx/api/leads"
-    : "https://api.toyota.com.ar:9201/dcx/api/leads";
 
 const asyncSendLead = async prospectObj => {
+    console.log(process.env.BASE_API_TOYOTA);
     try {
-        const res = await axios.post(url, JSON.stringify(prospectObj));
-        console.log(cluster.worker.id, " - ", res.headers["request-duration"]);
+        const res = await axios.post(
+            process.env.BASE_API_TOYOTA,
+            JSON.stringify(prospectObj)
+        );
         const { status, data } = res;
         const { LeadId } = data;
         const ok = status === 200;
