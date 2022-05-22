@@ -1,7 +1,11 @@
 const { axios } = require("../services");
-const makeProspectObject = require("./makeProspectObject");
+const {
+    makeToyotaObject,
+    makeVolkswagenObject
+} = require("./makeProspectObject");
+const forEach = require("lodash/forEach");
 
-const asyncSendLead = async prospectObj => {
+const asyncSendToyotaLead = async prospectObj => {
     const {
         prospect: {
             customer: { contacts }
@@ -13,7 +17,7 @@ const asyncSendLead = async prospectObj => {
 
     try {
         const res = await axios.post(
-            "https://api.toyota.com.ar:9201/dcx/api/leads",
+            process.env.BASE_API_TOYOTA,
             JSON.stringify(prospectObj)
         );
         const { status, data } = res;
@@ -35,14 +39,32 @@ const asyncSendLead = async prospectObj => {
     }
 };
 
-const createArrayOfPromises = arrOfLeads => {
+const asyncSendVolkswagenLead = async prospectObj => {
+    console.log(process.env.BASE_API_VOLKSWAGEN);
+    try {
+        const res = await axios.post(
+            process.env.BASE_API_VOLKSWAGEN,
+            prospectObj
+        );
+
+        const { status, data } = res;
+
+        console.log(res);
+        const ok = status === 200;
+
+        if (ok) return { data };
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+const toyotaPromises = arrOfLeads => {
     let promises = [];
 
-    for (let i = 0; i < arrOfLeads.length; i++) {
-        const { name, lastname, phones, code, comments, providerOrigin } =
-            arrOfLeads[i];
+    forEach(arrOfLeads, lead => {
+        const { name, lastname, phones, code, comments, providerOrigin } = lead;
 
-        const prospectObj = makeProspectObject({
+        const prospectObj = makeToyotaObject({
             name,
             lastname,
             phones,
@@ -52,11 +74,45 @@ const createArrayOfPromises = arrOfLeads => {
         });
 
         if (lastname) {
-            promises.push(asyncSendLead(prospectObj));
+            promises.push(asyncSendToyotaLead(prospectObj));
         }
-    }
+    });
 
     return promises;
 };
 
-module.exports = createArrayOfPromises;
+const volkswagenPromises = arrOfLeads => {
+    let promises = [];
+
+    forEach(arrOfLeads, lead => {
+        const {
+            name,
+            lastname,
+            phone,
+            email,
+            teamId,
+            product,
+            origin,
+            autoahorro
+        } = lead;
+
+        const prospectObj = makeVolkswagenObject({
+            name,
+            lastname,
+            phone,
+            email,
+            teamId,
+            product,
+            origin,
+            autoahorro
+        });
+
+        if (lastname) {
+            promises.push(asyncSendVolkswagenLead(prospectObj));
+        }
+    });
+
+    return promises;
+};
+
+module.exports = { toyotaPromises, volkswagenPromises };

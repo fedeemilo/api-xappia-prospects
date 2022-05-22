@@ -1,13 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const path = require("path");
-const multer = require("multer");
 const {
     sendLead,
-    convertExcelToJson,
-    uploadLead
+    toJsonLeadsToyota,
+    uploadLead,
+    toJsonLeadsVolkswagen
 } = require("../controllers/controller.leads");
-const { simpleDate } = require("../utils/dates");
+const { upload } = require("../services");
 
 router.get("/", (req, res) => {
     res.render(path.join(__dirname, "..", "views/pages", "/index.ejs"));
@@ -136,22 +136,12 @@ router.get("/", (req, res) => {
  */
 router.post("/leads-send", sendLead);
 
-let storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, path.join(__dirname, "..", "uploads"));
-    },
-    filename: function (req, file, cb) {
-        let fileName = file.originalname.split(" ").join("-").toLowerCase();
-
-        cb(null, simpleDate + "-" + fileName);
-    }
-});
-
-// Multer Upload Storage
-let upload = multer({ storage });
-
+/* Toyota */
 router.get("/leads-upload", uploadLead);
 
-router.post("/leads-to-json/toyota", upload.single("file"), convertExcelToJson);
+router.post("/leads/toyota", upload.single("file"), toJsonLeadsToyota);
+
+/* Volkswagen */
+router.post("/leads/volkswagen", upload.single("file"), toJsonLeadsVolkswagen);
 
 module.exports = router;

@@ -1,4 +1,4 @@
-const parseJsonToLeadsArr = excel =>
+const toyotaJsonToLeadsArr = excel =>
     excel.reduce((arr, obj) => {
         const {
             A: fullName,
@@ -11,13 +11,9 @@ const parseJsonToLeadsArr = excel =>
         let arrName = [];
         let arrPhones = [];
 
-        if (fullName) {
-            arrName = fullName.split(" ");
-        }
+        if (fullName) arrName = fullName.split(" ");
 
-        if (phone) {
-            arrPhones = [].concat(phone.toString());
-        }
+        if (phone) arrPhones = [].concat(phone.toString());
 
         const newProspect = {
             name: arrName[0],
@@ -33,4 +29,35 @@ const parseJsonToLeadsArr = excel =>
         return arr;
     }, []);
 
-module.exports = parseJsonToLeadsArr;
+const volkswagenJsonToLeadsArr = excel =>
+    excel.reduce((arr, obj) => {
+        const {
+            A: fullName,
+            B: phone,
+            C: email,
+            D: teamId,
+            E: product,
+            F: origin,
+            G: autoahorro
+        } = obj;
+
+        let arrName = [];
+
+        if (fullName) arrName = fullName.split(" ");
+
+        const newProspect = {
+            name: arrName[0],
+            lastname: arrName[arrName.length - 1],
+            phone,
+            email,
+            teamId,
+            product,
+            origin,
+            autoahorro
+        };
+
+        arr.push(newProspect);
+        return arr;
+    }, []);
+
+module.exports = { toyotaJsonToLeadsArr, volkswagenJsonToLeadsArr };

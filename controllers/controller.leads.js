@@ -1,19 +1,20 @@
 require("../config");
 require("dotenv").config();
 const fetch = require("node-fetch");
-const fs = require("fs");
 const path = require("path");
 const excelToJson = require("convert-excel-to-json");
-const {
-    createArrayOfPromises,
-    parseJsonToLeadsArr,
-    makeProspectObject
-} = require("../utils");
+const { makeToyotaObject } = require("../utils/makeProspectObject");
 const { htmlError } = require("../pages/error");
 const handleErrors = require("../utils/errors");
 const { default: axios } = require("axios");
-const { htmlSuccess } = require("../pages/success");
-const cluster = require("cluster");
+const {
+    toyotaJsonToLeadsArr,
+    volkswagenJsonToLeadsArr
+} = require("../utils/parseJsonToLeadsArr");
+const {
+    toyotaPromises,
+    volkswagenPromises
+} = require("../utils/createArrayOfPromises");
 
 // Entorno producción
 // const url = "https://api.toyota.com.ar:9201/dcx/api/leads";
@@ -38,7 +39,7 @@ module.exports = {
             providerOrigin
         } = req.body;
 
-        const prospect = makeProspectObject({
+        const prospect = makeToyotaObject({
             comments,
             interest,
             email,
@@ -86,18 +87,18 @@ module.exports = {
     /* Render page for uploading Excel file */
     uploadLead(req, res) {
         res.render(path.join(__dirname, "..", "views/pages", "/excel.ejs"));
-        cluster.worker.kill();
     },
 
-    /* Convert Excel file to json and reduce it to an array of leads to send */
-    async convertExcelToJson(req, res) {
+    /* Convert Toyota Excel file to json and reduce it to an array of leads to send */
+    async toJsonLeadsToyota(req, res) {
+        console.log(req.file);
         const jsonFile = excelToJson({
             sourceFile: req.file.path
         });
 
         const filterJson = Object.values(jsonFile)[0].slice(1);
-        const convertedResult = parseJsonToLeadsArr(filterJson);
-        const promises = createArrayOfPromises(convertedResult);
+        const convertedResult = toyotaJsonToLeadsArr(filterJson);
+        const promises = toyotaPromises(convertedResult);
 
         axios
             .all(promises)
@@ -110,5 +111,37 @@ module.exports = {
                 })
             )
             .catch(err => res.send(htmlError(err)));
+    },
+
+    /* Convert Volkswagen Excel file to json and reduce it to an array of leads to send */
+    async toJsonLeadsVolkswagen(req, res) {
+        if (!req.file)
+            return res.json({
+                ok: false,
+                result: { message: "Error con el archivo cargado" }
+            });
+
+        const jsonFile = excelToJson({
+            sourceFile: req.file.path
+        });
+
+        const filterJson = Object.values(jsonFile)[0].slice(1);
+        const convertedResult = volkswagenJsonToLeadsArr(filterJson);
+        const promises = volkswagenPromises(convertedResult);
+
+        axios
+            .all(promises)
+            .then(
+                axios.spread((...data) => {
+                    console.log(data);
+                    res.json({ ok: true, result: data[0].data });
+                })
+            )
+            .catch(err =>
+                res.json({
+                    ok: false,
+                    result: err
+                })
+            );
     }
 };
