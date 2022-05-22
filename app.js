@@ -44,6 +44,9 @@ if (cluster.isMaster) {
         console.log("worker: ", cluster.worker.id);
         console.log("Path:", req.originalUrl);
         console.log(process.env.NODE_ENV);
+        console.log(process.env.BASE_USERNAME);
+        console.log(process.env.NBASE_PASSWORD);
+        console.log(process.env.BASE_API_TOYOTA);
         next();
     });
     /* Routes */
