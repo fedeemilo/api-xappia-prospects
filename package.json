@@ -5,7 +5,7 @@
     "main": "index.js",
     "scripts": {
         "start": "cross-env NODE_ENV=production node app.js",
-        "dev": "nodemon app.js"
+        "dev": "cross-env NODE_ENV=production nodemon app.js"
     },
     "keywords": [],
     "author": "",
