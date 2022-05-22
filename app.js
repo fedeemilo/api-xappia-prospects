@@ -43,6 +43,7 @@ if (cluster.isMaster) {
     app.use((req, res, next) => {
         console.log("worker: ", cluster.worker.id);
         console.log("Path:", req.originalUrl);
+        console.log(process.env.NODE_ENV);
         next();
     });
     /* Routes */
