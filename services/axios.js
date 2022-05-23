@@ -7,7 +7,7 @@ const instance = axios.create({
         Accept: "application/json",
         "Content-Type": "application/json",
         username: process.env.XAPPIA_USERNAME,
-        password: process.env.XAPIA_PASSWORD,
+        password: process.env.XAPPIA_PASSWORD,
         dealer: process.env.XAPPIA_DEALER
     }
 });
