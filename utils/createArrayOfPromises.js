@@ -17,7 +17,7 @@ const asyncSendToyotaLead = async prospectObj => {
 
     try {
         const res = await axios.post(
-            process.env.BASE_API_TOYOTA,
+            process.env.XAPPIA_API_TOYOTA,
             JSON.stringify(prospectObj)
         );
         const { status, data } = res;
@@ -40,10 +40,10 @@ const asyncSendToyotaLead = async prospectObj => {
 };
 
 const asyncSendVolkswagenLead = async prospectObj => {
-    console.log(process.env.BASE_API_VOLKSWAGEN);
+    console.log(process.env.XAPPIA_API_VOLKSWAGEN);
     try {
         const res = await axios.post(
-            process.env.BASE_API_VOLKSWAGEN,
+            process.env.XAPPIA_API_VOLKSWAGEN,
             prospectObj
         );
 

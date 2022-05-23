@@ -15,7 +15,7 @@ let baseDealer;
 let baseApiToyota;
 let baseUrlApiVolkswagen;
 
-if (process.env.NODE_ENV === "dev") {
+if (process.env.NODE_ENV.includes("dev")) {
     baseUrl = `http://localhost:${process.env.PORT}`;
     baseUsername = "cw1kA5l0m0zVC7Bf6qYn";
     basePassword = "gKwekUuVLpm7YWbXfHy0";
