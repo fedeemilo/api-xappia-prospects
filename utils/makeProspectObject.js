@@ -7,7 +7,7 @@ const makeArrayPhones = phones =>
         return arr;
     }, []);
 
-const makeToyotaObject = ({
+const createToyotaObj = ({
     comments = "",
     interest = "",
     email = "",
@@ -74,7 +74,7 @@ const makeToyotaObject = ({
     return prospect;
 };
 
-const makeVolkswagenObject = ({
+const createVolkswagenObj = ({
     name,
     lastname,
     phone,
@@ -98,4 +98,4 @@ const makeVolkswagenObject = ({
     return prospect;
 };
 
-module.exports = { makeToyotaObject, makeVolkswagenObject };
+module.exports = { createToyotaObj, createVolkswagenObj };

@@ -5,7 +5,8 @@ const {
     sendLead,
     toJsonLeadsToyota,
     uploadLead,
-    toJsonLeadsVolkswagen
+    toJsonLeadsVolkswagen,
+    modifyDealer
 } = require("../controllers/controller.leads");
 const { upload } = require("../services");
 
@@ -136,9 +137,9 @@ router.get("/", (req, res) => {
  */
 router.post("/leads-send", sendLead);
 
-/* Toyota */
 router.get("/leads-upload", uploadLead);
 
+/* Toyota */
 router.post("/leads/toyota", upload.single("file"), toJsonLeadsToyota);
 
 /* Volkswagen */

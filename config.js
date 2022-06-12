@@ -37,8 +37,8 @@ if (process.env.NODE_ENV.includes("dev")) {
 //  Globals
 // ============================
 process.env.BASE_URL = baseUrl;
-process.env.BASE_USERNAME = baseUsername;
-process.env.BASE_PASSWORD = basePassword;
-process.env.BASE_DEALER = baseDealer;
-process.env.BASE_API_TOYOTA = baseApiToyota;
-process.env.BASE_API_VOLKSWAGEN = baseUrlApiVolkswagen;
+process.env.XAPPIA_USERNAME = baseUsername;
+process.env.XAPPIA_PASSWORD = basePassword;
+process.env.XAPPIA_DEALER = baseDealer;
+process.env.XAPPIA_API_TOYOTA = baseApiToyota;
+process.env.XAPPIA_API_VOLKSWAGEN = baseUrlApiVolkswagen;

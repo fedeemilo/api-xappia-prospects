@@ -1,24 +1,34 @@
-const { axios } = require("../services");
+const { default: axios } = require("axios");
 const {
-    makeToyotaObject,
-    makeVolkswagenObject
+    createToyotaObj,
+    createVolkswagenObj
 } = require("./makeProspectObject");
 const forEach = require("lodash/forEach");
 
-const asyncSendToyotaLead = async prospectObj => {
+const sendToyotaLead = async (leadObj, dealer) => {
     const {
         prospect: {
             customer: { contacts }
         }
-    } = prospectObj;
+    } = leadObj;
 
     const name = contacts[0].names[0].value;
     const lastname = contacts[0].names[1].value;
 
+    const config = {
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            username: process.env.XAPPIA_USERNAME,
+            password: process.env.XAPPIA_PASSWORD,
+            dealer
+        }
+    };
     try {
         const res = await axios.post(
             process.env.XAPPIA_API_TOYOTA,
-            JSON.stringify(prospectObj)
+            JSON.stringify(leadObj),
+            config
         );
         const { status, data } = res;
         const { LeadId: leadId } = data;
@@ -29,7 +39,7 @@ const asyncSendToyotaLead = async prospectObj => {
         if (err.response.data) {
             if (err.response.data["Auth error"])
                 throw new Error(
-                    "❌ El nombre de usuario proporcionado no es válido."
+                    "❌ El nombre de usuario o contraseña es incorrecto."
                 );
         } else {
             throw new Error(
@@ -39,8 +49,7 @@ const asyncSendToyotaLead = async prospectObj => {
     }
 };
 
-const asyncSendVolkswagenLead = async prospectObj => {
-    console.log(process.env.XAPPIA_API_VOLKSWAGEN);
+const sendVolkswagenLead = async prospectObj => {
     try {
         const res = await axios.post(
             process.env.XAPPIA_API_VOLKSWAGEN,
@@ -48,8 +57,6 @@ const asyncSendVolkswagenLead = async prospectObj => {
         );
 
         const { status, data } = res;
-
-        console.log(res);
         const ok = status === 200;
 
         if (ok) return { data };
@@ -58,61 +65,24 @@ const asyncSendVolkswagenLead = async prospectObj => {
     }
 };
 
-const toyotaPromises = arrOfLeads => {
+const handlePromises = (leads, createLead, sendLead, dealer) => {
     let promises = [];
 
-    forEach(arrOfLeads, lead => {
-        const { name, lastname, phones, code, comments, providerOrigin } = lead;
+    forEach(leads, lead => {
+        const leadObj = createLead(lead);
 
-        const prospectObj = makeToyotaObject({
-            name,
-            lastname,
-            phones,
-            code,
-            comments,
-            providerOrigin
-        });
-
-        if (lastname) {
-            promises.push(asyncSendToyotaLead(prospectObj));
+        if (lead.lastname) {
+            promises.push(sendLead(leadObj, dealer));
         }
     });
 
     return promises;
 };
 
-const volkswagenPromises = arrOfLeads => {
-    let promises = [];
+const toyotaPromises = (toyotaLeads, dealer) =>
+    handlePromises(toyotaLeads, createToyotaObj, sendToyotaLead, dealer);
 
-    forEach(arrOfLeads, lead => {
-        const {
-            name,
-            lastname,
-            phone,
-            email,
-            teamId,
-            product,
-            origin,
-            autoahorro
-        } = lead;
-
-        const prospectObj = makeVolkswagenObject({
-            name,
-            lastname,
-            phone,
-            email,
-            teamId,
-            product,
-            origin,
-            autoahorro
-        });
-
-        if (lastname) {
-            promises.push(asyncSendVolkswagenLead(prospectObj));
-        }
-    });
-
-    return promises;
-};
+const volkswagenPromises = volkswagenLeads =>
+    handlePromises(volkswagenLeads, createVolkswagenObj, sendVolkswagenLead);
 
 module.exports = { toyotaPromises, volkswagenPromises };

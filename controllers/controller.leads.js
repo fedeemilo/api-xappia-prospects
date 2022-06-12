@@ -7,6 +7,7 @@ const { makeToyotaObject } = require("../utils/makeProspectObject");
 const { htmlError } = require("../pages/error");
 const handleErrors = require("../utils/errors");
 const { default: axios } = require("axios");
+const axiosInstance = require("../services/axios");
 const {
     toyotaJsonToLeadsArr,
     volkswagenJsonToLeadsArr
@@ -91,14 +92,14 @@ module.exports = {
 
     /* Convert Toyota Excel file to json and reduce it to an array of leads to send */
     async toJsonLeadsToyota(req, res) {
-        console.log(req.file);
+        const { dealer } = req.query;
         const jsonFile = excelToJson({
             sourceFile: req.file.path
         });
 
         const filterJson = Object.values(jsonFile)[0].slice(1);
         const convertedResult = toyotaJsonToLeadsArr(filterJson);
-        const promises = toyotaPromises(convertedResult);
+        const promises = toyotaPromises(convertedResult, dealer);
 
         axios
             .all(promises)
@@ -110,7 +111,13 @@ module.exports = {
                     });
                 })
             )
-            .catch(err => res.send(htmlError(err)));
+            .catch(err => {
+                console.log(err.message);
+                res.status(500).json({
+                    ok: false,
+                    error: err.message
+                });
+            });
     },
 
     /* Convert Volkswagen Excel file to json and reduce it to an array of leads to send */
@@ -133,7 +140,6 @@ module.exports = {
             .all(promises)
             .then(
                 axios.spread((...data) => {
-                    console.log(data);
                     res.json({ ok: true, result: data[0].data });
                 })
             )

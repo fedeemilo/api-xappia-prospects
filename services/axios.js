@@ -1,7 +1,7 @@
 const axios = require("axios");
 require("../config");
 
-const instance = axios.create({
+const adapter = axios.create({
     timeout: 2 * 60 * 1000,
     headers: {
         Accept: "application/json",
@@ -12,11 +12,11 @@ const instance = axios.create({
     }
 });
 
-const adapter = {
-    get: url => instance.get(url),
-    post: (url, body) => instance.post(url, body),
-    put: (url, body) => instance.put(url, body),
-    delete: url => instance.delete(url)
-};
+// const adapter = {
+//     get: url => instance.get(url),
+//     post: (url, body) => instance.post(url, body),
+//     put: (url, body) => instance.put(url, body),
+//     delete: url => instance.delete(url)
+// };
 
 module.exports = adapter;
