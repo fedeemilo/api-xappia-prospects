@@ -37,6 +37,8 @@ const TOYOTA_ERRORS = err => {
             return "❌ El nombre de usuario o contraseña es incorrecto.";
         case "Resource not found":
             return "❌ Ha ocurrido un error con el servidor";
+        case "Fuente no registrada":
+            return "❌ El código de Dealer proporcionado no es válido";
         default:
             return "❌ No se pudo enviar el lead. Inténtelo de nuevo.";
     }
