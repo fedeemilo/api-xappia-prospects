@@ -12,12 +12,7 @@ const [hour, minutes, seconds] = [
     date.getSeconds()
 ];
 
-const correctHour = date.setHours(hour - 3);
-
 const fullDate = `${day}/${month}/${year} ${hour}:${minutes}:${seconds}`;
-
 const simpleDate = `${day}-${month}-${year}`;
 
-const currentTime = `${correctHour}:${minutes}:${seconds}`;
-
-module.exports = { simpleDate, fullDate, currentTime };
+module.exports = { simpleDate, fullDate };

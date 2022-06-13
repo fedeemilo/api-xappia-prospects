@@ -1,4 +1,5 @@
 const { default: axios } = require("axios");
+const moment = require("moment");
 const {
     createToyotaObj,
     createVolkswagenObj
@@ -32,7 +33,7 @@ const sendToyotaLead = async (leadObj, dealer) => {
     } catch (err) {
         console.log("==========ERROR LOGS==========");
         console.log("==============================");
-        console.log(currentTime);
+        console.log(moment().format("HH:mm:ss"));
         console.log(err.response.data);
         console.log("==============================");
 
