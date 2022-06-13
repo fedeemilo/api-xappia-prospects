@@ -10,7 +10,7 @@ const makeArrayPhones = phones =>
 const createToyotaObj = ({
     comments = "",
     interest = "",
-    email = "",
+    mail = "",
     name = "",
     lastname = "",
     phones = "",
@@ -20,8 +20,6 @@ const createToyotaObj = ({
     providerValue = "Datero",
     providerOrigin
 }) => {
-    const phonesArr = makeArrayPhones(phones);
-
     const prospect = {
         prospect: {
             requestdate: fullDate,
@@ -32,7 +30,7 @@ const createToyotaObj = ({
                     {
                         emails: [
                             {
-                                value: email
+                                value: mail
                             }
                         ],
                         names: [
@@ -45,7 +43,7 @@ const createToyotaObj = ({
                                 value: lastname
                             }
                         ],
-                        phones: phonesArr,
+                        phones,
                         addresses: [
                             {
                                 city,

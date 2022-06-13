@@ -44,4 +44,21 @@ const TOYOTA_ERRORS = err => {
     }
 };
 
-module.exports = { ENV, API_OPTIONS, TOYOTA_OPTIONS, TOYOTA_ERRORS };
+const VOLKSWAGEN_ERRORS = err => {
+    const ERROR = err[0]["message"] || "default";
+
+    switch (ERROR) {
+        case "Could not find a match for URL":
+            return "❌ La URL de la API no es correcta";
+        default:
+            return "❌ Ha ocurrido un error en el envío de leads";
+    }
+};
+
+module.exports = {
+    ENV,
+    API_OPTIONS,
+    TOYOTA_OPTIONS,
+    TOYOTA_ERRORS,
+    VOLKSWAGEN_ERRORS
+};

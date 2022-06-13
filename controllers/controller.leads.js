@@ -3,7 +3,7 @@ require("dotenv").config();
 const fetch = require("node-fetch");
 const path = require("path");
 const excelToJson = require("convert-excel-to-json");
-const { createToyotaObj } = require("../utils/makeProspectObject");
+const { createToyotaObj } = require("../utils/createLeadObject");
 const handleErrors = require("../utils/errors");
 const { default: axios } = require("axios");
 const {
@@ -13,7 +13,7 @@ const {
 const {
     toyotaPromises,
     volkswagenPromises
-} = require("../utils/createArrayOfPromises");
+} = require("../utils/createLeadPromises");
 const { ENV, API_OPTIONS } = require("../utils/constants");
 
 module.exports = {
@@ -101,11 +101,12 @@ module.exports = {
                     res.json({ ok: true, result: data[0].data });
                 })
             )
-            .catch(err =>
-                res.json({
+            .catch(err => {
+                console.log(err.message);
+                res.status(500).json({
                     ok: false,
-                    result: err
-                })
-            );
+                    error: err.message
+                });
+            });
     }
 };

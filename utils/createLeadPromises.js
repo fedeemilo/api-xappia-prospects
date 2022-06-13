@@ -1,10 +1,12 @@
 const { default: axios } = require("axios");
-const {
-    createToyotaObj,
-    createVolkswagenObj
-} = require("./makeProspectObject");
+const { createToyotaObj, createVolkswagenObj } = require("./createLeadObject");
 const forEach = require("lodash/forEach");
-const { ENV, TOYOTA_OPTIONS, TOYOTA_ERRORS } = require("./constants");
+const {
+    ENV,
+    TOYOTA_OPTIONS,
+    TOYOTA_ERRORS,
+    VOLKSWAGEN_ERRORS
+} = require("./constants");
 
 const sendToyotaLead = async (leadObj, dealer) => {
     const {
@@ -31,6 +33,7 @@ const sendToyotaLead = async (leadObj, dealer) => {
     } catch (err) {
         console.log("==========ERROR LOGS==========");
         console.log("==============================");
+        console.log(err);
         console.log(err.response.data);
         console.log("==============================");
 
@@ -49,7 +52,9 @@ const sendVolkswagenLead = async prospectObj => {
 
         if (ok) return { data };
     } catch (error) {
-        console.log(error);
+        console.log(error.response.data);
+        const errorMessage = VOLKSWAGEN_ERRORS(error.response.data);
+        throw new Error(errorMessage);
     }
 };
 
