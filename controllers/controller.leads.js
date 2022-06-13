@@ -3,11 +3,9 @@ require("dotenv").config();
 const fetch = require("node-fetch");
 const path = require("path");
 const excelToJson = require("convert-excel-to-json");
-const { makeToyotaObject } = require("../utils/makeProspectObject");
-const { htmlError } = require("../pages/error");
+const { createToyotaObj } = require("../utils/makeProspectObject");
 const handleErrors = require("../utils/errors");
 const { default: axios } = require("axios");
-const axiosInstance = require("../services/axios");
 const {
     toyotaJsonToLeadsArr,
     volkswagenJsonToLeadsArr
@@ -16,58 +14,19 @@ const {
     toyotaPromises,
     volkswagenPromises
 } = require("../utils/createArrayOfPromises");
-
-// Entorno producción
-// const url = "https://api.toyota.com.ar:9201/dcx/api/leads";
-
-// Entorno pruebas
-const url = "http://200.7.15.135:9201/dcx/api/leads";
+const { ENV, API_OPTIONS } = require("../utils/constants");
 
 module.exports = {
     /* Send single Lead to salesforce through Swagger api-docs */
     async sendLead(req, res) {
-        const {
-            comments,
-            interest,
-            email,
-            name,
-            lastname,
-            phones,
-            city,
-            country,
-            vehicles,
-            providerValue,
-            providerOrigin
-        } = req.body;
-
-        const prospect = makeToyotaObject({
-            comments,
-            interest,
-            email,
-            name,
-            lastname,
-            phones,
-            city,
-            country,
-            vehicles,
-            providerValue,
-            providerOrigin
-        });
-
-        const options = {
-            method: "post",
-            body: JSON.stringify(prospect),
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                username: process.env.HEADER_USERNAME,
-                password: process.env.HEADER_PASSWORD,
-                dealer: process.env.HEADER_DEALER
-            }
-        };
+        const prospect = createToyotaObj(req.body);
+        const options = API_OPTIONS(prospect);
 
         try {
-            const response = await fetch(url, options);
+            const response = await fetch(
+                process.env.XAPPIA_API_TOYOTA,
+                options
+            );
             const resJson = await response.json();
             const { ok, status } = response;
 
@@ -77,7 +36,6 @@ module.exports = {
 
             handleErrors(status, resLead, res, ok);
         } catch (err) {
-            console.log(err);
             res.json({
                 ok: false,
                 err

@@ -4,6 +4,7 @@ const {
     createVolkswagenObj
 } = require("./makeProspectObject");
 const forEach = require("lodash/forEach");
+const { ENV, TOYOTA_OPTIONS, TOYOTA_ERRORS } = require("./constants");
 
 const sendToyotaLead = async (leadObj, dealer) => {
     const {
@@ -15,18 +16,10 @@ const sendToyotaLead = async (leadObj, dealer) => {
     const name = contacts[0].names[0].value;
     const lastname = contacts[0].names[1].value;
 
-    const config = {
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            username: process.env.XAPPIA_USERNAME,
-            password: process.env.XAPPIA_PASSWORD,
-            dealer
-        }
-    };
+    const config = TOYOTA_OPTIONS(dealer);
     try {
         const res = await axios.post(
-            process.env.XAPPIA_API_TOYOTA,
+            ENV.XAPPIA_API_TOYOTA,
             JSON.stringify(leadObj),
             config
         );
@@ -36,25 +29,15 @@ const sendToyotaLead = async (leadObj, dealer) => {
 
         if (ok) return { leadId, name, lastname };
     } catch (err) {
-        if (err.response.data) {
-            if (err.response.data["Auth error"])
-                throw new Error(
-                    "❌ El nombre de usuario o contraseña es incorrecto."
-                );
-        } else {
-            throw new Error(
-                "❌ No se pudo enviar el lead. Inténtelo de nuevo."
-            );
-        }
+        const errorMessage = TOYOTA_ERRORS(err.response.data);
+
+        if (err.response.data) throw new Error(errorMessage);
     }
 };
 
 const sendVolkswagenLead = async prospectObj => {
     try {
-        const res = await axios.post(
-            process.env.XAPPIA_API_VOLKSWAGEN,
-            prospectObj
-        );
+        const res = await axios.post(ENV.XAPPIA_API_VOLKSWAGEN, prospectObj);
 
         const { status, data } = res;
         const ok = status === 200;
