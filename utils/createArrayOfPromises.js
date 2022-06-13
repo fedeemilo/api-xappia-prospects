@@ -5,6 +5,7 @@ const {
 } = require("./makeProspectObject");
 const forEach = require("lodash/forEach");
 const { ENV, TOYOTA_OPTIONS, TOYOTA_ERRORS } = require("./constants");
+const { currentTime } = require("./dates");
 
 const sendToyotaLead = async (leadObj, dealer) => {
     const {
@@ -31,7 +32,7 @@ const sendToyotaLead = async (leadObj, dealer) => {
     } catch (err) {
         console.log("==========ERROR LOGS==========");
         console.log("==============================");
-        console.log(err);
+        console.log(currentTime);
         console.log(err.response.data);
         console.log("==============================");
 

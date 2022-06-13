@@ -16,4 +16,6 @@ const fullDate = `${day}/${month}/${year} ${hour}:${minutes}:${seconds}`;
 
 const simpleDate = `${day}-${month}-${year}`;
 
-module.exports = { simpleDate, fullDate };
+const currentTime = `${hour}:${minutes}:${seconds}`;
+
+module.exports = { simpleDate, fullDate, currentTime };
