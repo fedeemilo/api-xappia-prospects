@@ -50,6 +50,12 @@ module.exports = {
 
     /* Convert Toyota Excel file to json and reduce it to an array of leads to send */
     async toJsonLeadsToyota(req, res) {
+        if (!req.file)
+            return res.json({
+                ok: false,
+                result: { message: "Error con el archivo cargado" }
+            });
+
         const { dealer } = req.query;
         const jsonFile = excelToJson({
             sourceFile: req.file.path
