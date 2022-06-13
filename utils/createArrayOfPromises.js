@@ -29,6 +29,12 @@ const sendToyotaLead = async (leadObj, dealer) => {
 
         if (ok) return { leadId, name, lastname };
     } catch (err) {
+        console.log("==========ERROR LOGS==========");
+        console.log("==============================");
+        console.log(err);
+        console.log(err.response.data);
+        console.log("==============================");
+
         const errorMessage = TOYOTA_ERRORS(err.response.data);
 
         if (err.response.data) throw new Error(errorMessage);
