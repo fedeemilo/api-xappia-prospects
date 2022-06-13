@@ -6,7 +6,6 @@ const {
 } = require("./makeProspectObject");
 const forEach = require("lodash/forEach");
 const { ENV, TOYOTA_OPTIONS, TOYOTA_ERRORS } = require("./constants");
-const { currentTime } = require("./dates");
 
 const sendToyotaLead = async (leadObj, dealer) => {
     const {
