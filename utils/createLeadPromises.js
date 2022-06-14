@@ -25,6 +25,7 @@ const sendToyotaLead = async (leadObj, dealer) => {
             JSON.stringify(leadObj),
             config
         );
+        console.log(res);
         const { status, data } = res;
         const { LeadId: leadId } = data;
         const ok = status === 200;

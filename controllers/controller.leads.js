@@ -108,10 +108,10 @@ module.exports = {
                 })
             )
             .catch(err => {
-                console.log(err.message);
+                console.log(err);
                 res.status(500).json({
                     ok: false,
-                    error: err.message
+                    error: "Error en el servidor"
                 });
             });
     }

@@ -22,7 +22,7 @@ if (process.env.NODE_ENV.includes("dev")) {
 
     baseApiToyota = "http://200.7.15.135:9201/dcx/api/leads";
     baseUrlApiVolkswagen =
-        "https://qa-volkswagenargentina.cs16.force.com/services/apexrest/createNewLe";
+        "https://qa-volkswagenargentina.cs16.force.com/services/apexrest/createNewLead";
 } else {
     baseUrl = "http://ec2-13-58-180-105.us-east-2.compute.amazonaws.com:8000";
     baseUsername = "fGvova1i0J1nYiwXKgIY";
