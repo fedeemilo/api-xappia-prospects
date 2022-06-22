@@ -20,6 +20,8 @@ const createToyotaObj = ({
     providerValue = "Datero",
     providerOrigin
 }) => {
+    const arrPhones = makeArrayPhones(phones);
+
     const prospect = {
         prospect: {
             requestdate: fullDate,
@@ -43,7 +45,7 @@ const createToyotaObj = ({
                                 value: lastname
                             }
                         ],
-                        phones,
+                        phones: arrPhones,
                         addresses: [
                             {
                                 city,
@@ -64,6 +66,11 @@ const createToyotaObj = ({
                 name: {
                     value: providerValue,
                     origin: providerOrigin
+                }
+            },
+            vendor: {
+                vendorname: {
+                    value: "Almas"
                 }
             }
         }

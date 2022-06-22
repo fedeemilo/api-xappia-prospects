@@ -17,7 +17,7 @@ const API_OPTIONS = prospect => ({
     }
 });
 
-const TOYOTA_OPTIONS = dealer => ({
+const TOYOTA_OPTIONS = (dealer = "KAI") => ({
     headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
