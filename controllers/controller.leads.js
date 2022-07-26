@@ -76,7 +76,6 @@ module.exports = {
                 })
             )
             .catch(err => {
-                console.log(err.message);
                 res.status(500).json({
                     ok: false,
                     error: err.message
@@ -108,10 +107,9 @@ module.exports = {
                 })
             )
             .catch(err => {
-                console.log(err);
                 res.status(500).json({
                     ok: false,
-                    error: "Error en el servidor"
+                    error: err.message || "Error en el servidor"
                 });
             });
     }

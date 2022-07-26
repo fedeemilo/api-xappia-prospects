@@ -53,6 +53,7 @@ const sendVolkswagenLead = async prospectObj => {
 
         if (ok) return { data };
     } catch (error) {
+        console.log('====ERROR VOLKSWAGEN====');
         console.log(error.response.data);
         const errorMessage = VOLKSWAGEN_ERRORS(error.response.data);
         throw new Error(errorMessage);
